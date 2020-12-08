@@ -19,16 +19,16 @@ import com.example.myapplication.response.Datum;
 import com.example.myapplication.response.UserListR;
 import com.example.myapplication.retro.ApiClient;
 import com.example.myapplication.retro.ApiInterface;
-import com.google.gson.Gson;
 
 import java.util.List;
 
 
 public class UserListActivity extends AppCompatActivity {
     RecyclerView rUserList;
-    String initial_page="1";
+    int initial_page=1;
     ProgressDialog progressDialog;
     Context mContext;
+    boolean isUserScrolling;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class UserListActivity extends AppCompatActivity {
         rUserList = (RecyclerView) findViewById(R.id.rUserList);
 
         //load Data
-        loadUserList(initial_page);
+        loadUserList(initial_page+"");
 
 
 
@@ -97,8 +97,14 @@ public class UserListActivity extends AppCompatActivity {
                 super.onScrollStateChanged(recyclerView, newState);
 
                 if (!recyclerView.canScrollVertically(1)) {
-                    initial_page=initial_page+1;
-                    loadUserList(initial_page);
+
+                    try {
+                        initial_page++;
+                        loadUserList(initial_page+"");
+                    }catch (Exception e){
+
+                    }
+
                 }
             }
         });

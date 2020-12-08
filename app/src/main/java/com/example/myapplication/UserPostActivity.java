@@ -28,7 +28,7 @@ public class UserPostActivity extends AppCompatActivity {
     String id="";
     ProgressDialog progressDialog;
     Context mContext;
-    TextView tvUserID,tvTitle,tvBody,tvCreatedDate;
+    TextView tvUserID,tvTitle,tvBody,tvCreateDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,21 +39,11 @@ public class UserPostActivity extends AppCompatActivity {
         rUserList = (RecyclerView) findViewById(R.id.rUserList);
         Intent intent=getIntent();
         id=intent.getStringExtra("id");
-
-
-        tvUserID=(TextView) findViewById(R.id.tvUserID);
-
         tvTitle=(TextView) findViewById(R.id.tvTitle);
-
+        tvCreateDate=(TextView) findViewById(R.id.tvCreateDate);
         tvBody=(TextView) findViewById(R.id.tvBody);
-
-        tvCreatedDate=(TextView) findViewById(R.id.tvCreatedDate);
-
         //load Data
         loadUserPost(id);
-
-
-
 
     }
 
@@ -65,23 +55,15 @@ public class UserPostActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<UserPostResponse> call, Response<UserPostResponse> response) {
                 Gson gson=new Gson();
-                Log.e("rmytag", gson.toJson(response.body()));
                 try {
                     if (response.code() ==200) {
                         try {
                             progressDialog.dissmiss();
                             UserPostResponse UserPostResponse=response.body();
-
                             List<Datum> list=UserPostResponse.getData();
-                            Log.e("title",list.get(0).getTitle());
-
-                            tvUserID.setText(list.get(0).getId()+"");
                             tvTitle.setText(list.get(0).getTitle());
                             tvBody.setText(list.get(0).getBody());
-                            tvCreatedDate.setText(list.get(0).getCreatedAt());
-
-
-
+                            tvCreateDate.setText("Created At : "+list.get(0).getCreatedAt());
                         } catch (Exception e) {
                             progressDialog.dissmiss();
                         }
